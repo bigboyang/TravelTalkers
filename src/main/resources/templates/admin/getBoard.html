@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/static/css/admin/main.css" th:href="@{/css/admin/main.css}">
+
+    <!-- IONICONS -->
+    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+
+    <style>
+
+        body{font-family:'Nanum Gothic';}
+
+        .margin2{
+            margin-bottom: 5rem;
+        }
+
+        table.type10 {
+            border-collapse: collapse;
+            text-align: left;
+            line-height: 1.5;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            margin: 20px 10px;
+        }
+        table.type10 thead th {
+            width: 150px;
+            padding: 10px;
+            font-weight: bold;
+            vertical-align: top;
+            color: #090909;
+            background: bisque;
+            margin: 20px 10px;
+        }
+        table.type10 tbody th {
+            width: 150px;
+            padding: 10px;
+        }
+        table.type10 td {
+            width: 350px;
+            padding: 10px;
+            vertical-align: top;
+        }
+        table.type10 .even {
+            background: #fdf3f5;
+        }
+
+.btn span{
+    border-radius: 25px;
+        background:#212529;
+            color:#fff;
+            border:none;
+            position:relative;
+
+            font-size:16px;
+            padding:0 10px;
+            cursor:pointer;
+            transition:300ms ease all;
+            outline:none;
+    }
+.btn span:hover{
+    background:#fff;
+    color:#212529;
+}
+
+
+
+    </style>
+
+</head>
+<body id="body-pd">
+
+<div class="l-navbar" id="navbar">
+    <nav class="nav">
+        <div>
+            <div class="nav__brand">
+                <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+                <a href="/board/getBoardList" class="nav__logo">Mini_Project</a>
+            </div>
+            <div class="nav__list">
+                <a href="/admin/main" class="nav__link active">
+                    <ion-icon name="home-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">홈으로</span>
+                </a>
+                <a href="#" class="nav__link">
+                    <ion-icon name="chatbubbles-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">채팅</span>
+                </a>
+
+                <div href="#" class="nav__link collapse">
+                    <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">데이터 관리</span>
+
+                    <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+                    <ul class="collapse__menu">
+                        <a href="/admin/userList" class="collapse__sublink">User</a>
+                        <a href="/admin/boardList" class="collapse__sublink">Board</a>
+                    </ul>
+                </div>
+
+                <a href="/user/mypage" class="nav__link">
+                    <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">관리자 계정 관리</span>
+                </a>
+            </div>
+            <a href="/user/logout" class="nav__link">
+                <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+                <span class="nav_name">로그아웃</span>
+            </a>
+        </div>
+    </nav>
+</div>
+
+<h1 class="margin2">게시판 상세 정보</h1>
+<div style="height:500px; width:750px; overflow:auto">
+    <table class="type10">
+        <thead>
+        <tr>
+            <th scope="cols">보드번호</th>
+            <th scope="cols">[[${board.bno}]]</th>
+        </tr>
+        </thead>
+        <tr>
+            <td>제목</td>
+            <td> [[${board.title}]]</td>
+        </tr>
+        <tr class="even">
+            <td>작성자</td>
+            <td>
+                <a th:href="@{/admin/getuser(memberId=${board.memberId})}">
+                    [[${board.memberId}]]
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>내용</td>
+            <td> [[${board.content}]]</td>
+        </tr>
+        <tr class="even">
+            <td>작성날짜</td>
+            <td th:text="${#dates.format(board.regDate, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        <tr>
+            <td>조회수</td>
+            <td>[[${board.cnt}]] </td>
+        </tr>
+        <tr class="even">
+            <td>파일</td>
+            <td>
+                <img th:if="${#strings.contains(board.pic,'.')}" th:src="@{/imgs/}+${board.pic}" width="100px" height="100px"/>
+            </td>
+        </tr>
+        <tr>
+            <td scope="cols">게시글 댓글 내용, 댓글 숫자 : [[${#lists.size(commentList)}]]개</td>
+            <td scope="cols">댓글작성자</td>
+        </tr>
+
+        <tbody id="comments" th:if="${#lists.size(commentList)} > 0" th:each="comment : ${commentList}">
+        <tr>
+            <td >[[${comment.context}]]
+            &nbsp;&nbsp;
+                <a th:href="@{/admin/deleteComment(cno=${comment.cno},bno=${comment.bno})}">
+                    댓글 삭제
+                </a>
+            </td>
+            <td>
+                <a th:href="@{/admin/getuser(memberId=${comment.memberId})}">
+                [[${comment.memberId}]]
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/admin/boardList" class="btn btn-dark rounded-pill col-3 mt-3" style="float: left; margin-right: 2rem"><span>게시판 목록으로</span></a>
+
+    <form id="form" action="/admin/boardDelete" method="post" class="center">
+        <input type="hidden" id="memberId" name="bno" th:value="${board.bno}">
+        <div class="btn btn-danger rounded-pill col-3 mt-3" type="submit" onclick="if(!confirm('정말로 삭제 하시겠습니까?')){return false;}">
+            <span>해당게시글 삭제</span>
+        </div>
+    </form>
+</div>
+
+
+
+<script>
+
+    /* EXPANDER MENU */
+    const showMenu = (toggleId, navbarId, bodyId) => {
+        const toggle = document.getElementById(toggleId),
+            navbar = document.getElementById(navbarId),
+            bodypadding = document.getElementById(bodyId)
+
+        if( toggle && navbar ) {
+            toggle.addEventListener('click', ()=>{
+                navbar.classList.toggle('expander');
+
+                bodypadding.classList.toggle('body-pd')
+            })
+        }
+    }
+
+    showMenu('nav-toggle', 'navbar', 'body-pd')
+
+    /* LINK ACTIVE */
+    const linkColor = document.querySelectorAll('.nav__link')
+    function colorLink() {
+        linkColor.forEach(l=> l.classList.remove('active'))
+        this.classList.add('active')
+    }
+    linkColor.forEach(l=> l.addEventListener('click', colorLink))
+
+    /* COLLAPSE MENU */
+    const linkCollapse = document.getElementsByClassName('collapse__link')
+    var i
+
+    for(i=0;i<linkCollapse.length;i++) {
+        linkCollapse[i].addEventListener('click', function(){
+            const collapseMenu = this.nextElementSibling
+            collapseMenu.classList.toggle('showCollapse')
+
+            const rotate = collapseMenu.previousElementSibling
+            rotate.classList.toggle('rotate')
+        });
+    }
+
+</script>
+
+</body>
+</html>

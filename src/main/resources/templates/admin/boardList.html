@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" href="/static/css/admin/main.css" th:href="@{/css/admin/main.css}">
+
+
+  <!-- IONICONS -->
+  <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+
+  <style>
+
+
+    body{font-family:'Nanum Gothic';}
+
+    .margin2{
+      margin-bottom: 5rem;
+    }
+
+    table.type10 {
+      border-collapse: collapse;
+      text-align: left;
+      line-height: 1.5;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      margin: 20px 10px;
+    }
+    table.type10 thead th {
+      width: 150px;
+      padding: 10px;
+      font-weight: bold;
+      vertical-align: top;
+      color: #090909;
+      background: bisque;
+      margin: 20px 10px;
+    }
+    table.type10 tbody th {
+      width: 150px;
+      padding: 10px;
+    }
+    table.type10 td {
+      width: 350px;
+      padding: 10px;
+      vertical-align: top;
+    }
+    table.type10 .even {
+      background: #fdf3f5;
+    }
+
+    .pageInfo{
+      list-style : none;
+      display: inline-block;
+      margin: 50px 0 0 100px;
+    }
+
+    .pageInfo li{
+      float: left;
+      font-size: 20px;
+      margin-left: 18px;
+      padding: 7px;
+      font-weight: 500;
+    }
+
+    .pageInfo a:link {color:black; text-decoration: none;}
+    .pageInfo a:visited {color:black; text-decoration: none;}
+    .pageInfo a:hover {color:black; text-decoration: none;}
+
+  </style>
+
+</head>
+<body id="body-pd">
+
+<div class="l-navbar" id="navbar">
+  <nav class="nav">
+    <div>
+      <div class="nav__brand">
+        <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+        <a href="/board/getBoardList" class="nav__logo">Mini_Project</a>
+      </div>
+      <div class="nav__list">
+        <a href="/admin/main" class="nav__link active">
+          <ion-icon name="home-outline" class="nav__icon"></ion-icon>
+          <span class="nav_name">홈으로</span>
+        </a>
+        <a href="#" class="nav__link">
+          <ion-icon name="chatbubbles-outline" class="nav__icon"></ion-icon>
+          <span class="nav_name">채팅</span>
+        </a>
+
+        <div href="#" class="nav__link collapse">
+          <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
+          <span class="nav_name">데이터 관리</span>
+
+          <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+          <ul class="collapse__menu">
+            <a href="/admin/userList" class="collapse__sublink">User</a>
+            <a href="/admin/boardList" class="collapse__sublink">Board</a>
+          </ul>
+        </div>
+
+        <a href="/user/mypage" class="nav__link">
+          <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
+          <span class="nav_name">관리자 계정 관리</span>
+        </a>
+      </div>
+      <a href="/user/logout" class="nav__link">
+        <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+        <span class="nav_name">로그아웃</span>
+      </a>
+    </div>
+  </nav>
+</div>
+
+<h1 class="margin2">보드 리스트</h1>
+
+<div class="board_search">
+  <form method="get" >
+    <div class="board_search">
+      <select class="form-control">
+        <option name="searchCondition" value="bc_title">제목</option>
+        <option name="searchCondition" value="bc_content">내용</option>
+      </select>
+
+      <label class="inp_search">
+        <input type="text" placeholder="Search" class="srch_text" name="searchKeyword" value="">
+        <a th:href="@{/admin/boardList}" class="search_btn">검색하기</a>
+      </label>
+  </form>
+</div>
+
+<table class="type10"  >
+  <thead>
+  <tr>
+    <th scope="cols">보드번호</th>
+    <th scope="cols">제목</th>
+    <th scope="cols">작성자</th>
+    <th scope="cols" >내용</th>
+    <th scope="cols">작성날짜</th>
+    <th scope="cols">조회수</th>
+  </tr>
+  </thead>
+
+  <tbody th:if="${#lists.size(boardList)} > 0" th:each="board : ${boardList}">
+  <tr>
+    <td th:text="${board.bno}"></td>
+    <td>
+      <a th:href="@{/admin/getBoard(bno=${board.bno})}">
+        [[${board.title}]]
+      </a>
+    </td>
+    <td th:text="${board.memberId}"></td>
+    <td th:text="${board.content}" style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap"></td>
+    <td th:text="${#dates.format(board.regDate, 'yyyy-MM-dd HH:mm')}"></td>
+    <td th:text="${board.cnt}"></td>
+  </tr>
+
+
+</table>
+
+<div class="pageInfo" style="position: absolute; left: 40%; transform: translateX(-40%)" th:if="${#lists.size(boardList)} > 0">
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <a class="page-link" th:href="@{/admin/boardList(pageNum=1,searchCondition=${pageMaker.searchCondition},searchKeyword=${pageMaker.searchKeyword})}" aria-label="Previous">
+        <span aria-hidden="true">처음</span>
+      </a>
+    </li>
+
+    <th:block  th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+      <li class="page-item"
+          th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+          th:each="pageButton : ${#numbers.sequence(start, end)}">
+        <a class="page-link" th:href="@{/admin/boardList(pageNum=${pageButton},searchCondition=${pageMaker.searchCondition},searchKeyword=${pageMaker.searchKeyword})}"  th:text=${pageButton} ></a>
+      </li>
+    </th:block>
+
+    <li class="page-item">
+      <a class="page-link" th:href="@{/admin/boardList(pageNum=${pageMaker.endPage},searchCondition=${pageMaker.searchCondition},searchKeyword=${pageMaker.searchKeyword})}" aria-label="Previous">
+        <span aria-hidden="true">마지막</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<script>
+
+  /* EXPANDER MENU */
+  const showMenu = (toggleId, navbarId, bodyId) => {
+    const toggle = document.getElementById(toggleId),
+            navbar = document.getElementById(navbarId),
+            bodypadding = document.getElementById(bodyId)
+
+    if( toggle && navbar ) {
+      toggle.addEventListener('click', ()=>{
+        navbar.classList.toggle('expander');
+
+        bodypadding.classList.toggle('body-pd')
+      })
+    }
+  }
+
+  showMenu('nav-toggle', 'navbar', 'body-pd')
+
+  /* LINK ACTIVE */
+  const linkColor = document.querySelectorAll('.nav__link')
+  function colorLink() {
+    linkColor.forEach(l=> l.classList.remove('active'))
+    this.classList.add('active')
+  }
+  linkColor.forEach(l=> l.addEventListener('click', colorLink))
+
+  /* COLLAPSE MENU */
+  const linkCollapse = document.getElementsByClassName('collapse__link')
+  var i
+
+  for(i=0;i<linkCollapse.length;i++) {
+    linkCollapse[i].addEventListener('click', function(){
+      const collapseMenu = this.nextElementSibling
+      collapseMenu.classList.toggle('showCollapse')
+
+      const rotate = collapseMenu.previousElementSibling
+      rotate.classList.toggle('rotate')
+    });
+  }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<style>
+    input{ width: 500px; padding: 10px 20px; margin: 1rem 0 ; box-sizing: border-box; border-radius: 10rem}
+</style>
+
+<head th:insert="common/head.html"></head>
+<body>
+<header th:insert="common/header.html"></header>
+<div style="text-align: center; max-width: 500px; margin: 4rem auto;">
+
+    <h2> 회원 정보 수정 </h2>
+
+    <form id="modify_form" method="post" enctype="multipart/form-data">
+
+        <div class="form-group">
+            <div style="margin-top: 2rem;">닉네임 변경</div>
+            <input type="text" name="memberName" placeholder="Name" th:value="${session.member.memberName}">
+
+        </div>
+
+
+        <!-- 유저 이메일 입력란 -->
+        <div class="mail-wrap" >
+            <div class="mail_name"style="margin-top: 2rem">이메일</div>
+            <div class="mail_input_box">
+                <!-- name == VO 변수값 !!! -->
+                <input class="mail_input" name="memberMail" th:value="${session.member.memberMail}">
+            </div>
+            <span class="final_mail_ck">이메일을 입력하세요</span>
+            <span class="mail_input_box_warn"></span>
+
+            <!-- 인증번호 전송 및 코드 입력란 -->
+            <div class="mail_check_wrap">
+
+                <!-- 메일 인증 쿼리 id ="mail_check_input_box_false" -->
+                <div class="mail_check_input_box" style="margin: 1rem auto;">
+                    <input id="mail_check_input_box_false" class="mail_check_input" style="float:left; width:20rem; height: 2rem;" disabled = "disabled">
+                </div>
+                <div class="mail_check_button col-3" style="border-radius: 0.8rem; border: 1px solid black; display:inline-block">
+                    <span>인증번호 전송</span>
+                </div>
+                <div class="clearfix"></div>
+                <span id="mail_check_input_box_warn"></span>
+            </div>
+        </div>
+
+        <div>
+            <input type="file" value="프로필 사진 등록" name="file">
+        </div>
+
+        <div style="margin: 2rem auto;">
+            <input type="submit" class="modify_button" value="제출" />
+        </div>
+
+    </form>
+</div>
+
+<script>
+    let code = "";
+
+    let nameCheck = false;
+    let mailCheck = false;
+    let mailnumCheck = false;
+
+    $(document).ready(function (){
+        //회원 수정 버튼 로직
+        $(".modify_button").click(function (){
+
+            let name= $('.user_input').val();
+            let mail = $('.mail_input').val();
+
+
+            if (name == ""){
+                $('.final_name_ck').css('display','block');
+                nameCheck = false;
+            } else {
+                $('.final_name_ck').css('display','none');
+                nameCheck = true;
+            }
+
+            if (mail == ""){
+                $('.final_mail_ck').css('display','block');
+                mailCheck = false;
+            } else {
+                $('.final_mail_ck').css('display','none');
+                mailCheck = true;
+            }
+
+
+            if(nameCheck&&mailCheck&&mailnumCheck){
+                $("#modify_form").attr("action","/user/mypage/modify");
+                $("#modify_form").submit();
+            }
+
+            return false;
+
+        })
+    })
+
+
+    $(".mail_check_button").click(function (){
+
+        let email = $(".mail_input").val();
+        let checkBox = $(".mail_check_input");
+        let boxWrap = $(".mail_check_input_box");
+        let warnMsg = $(".mail_input_box_warn");
+
+        if(mailFormCheck(email)){
+            warnMsg.html("이메일이 전송 되었습니다. 이메일을 확인해 주세요");
+            warnMsg.css("display","inline-block");
+        } else {
+            warnMsg.html("올바르지 못한 이메일 형식입니다.");
+            warnMsg.css("display","inline-block");
+            return false;
+        }
+
+        $.ajax({
+
+            type: "GET",
+            url:"/user/mailCheck?email="+email,
+            success:function (data){
+                checkBox.attr("disabled", false);
+                boxWrap.attr("id","mail_check_input_box_true");
+                code = data;
+            }
+
+        });
+
+    });
+
+    $(".mail_check_input").blur(function (){
+
+        let inputCode = $(".mail_check_input").val();
+        let checkResult = $('#mail_check_input_box_warn');
+
+        if(inputCode == code){
+            checkResult.html("인증 번호가 일치합니다.");
+            checkResult.attr("class","correct");
+            mailnumCheck = true;
+        } else{
+            checkResult.html("인증번호를 다시 확인해주세요");
+            checkResult.attr("class","incorrect");
+            mailnumCheck = false;
+        }
+
+    });
+
+    function mailFormCheck(email){
+        let form = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        return form.test(email);
+    }
+
+</script>
+
+</body>
+</html>

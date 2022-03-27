@@ -1,0 +1,159 @@
+.id_input_re_1{
+
+    color : green;
+    display: none;
+}
+
+.id_input_re_2{
+    color : red;
+    display: none;
+}
+
+
+
+#mail_check_input_box_true{
+    background-color:white;
+}
+
+.correct{
+    color : green;
+}
+
+.incorrect{
+    color : red;
+}
+
+.final_id_ck{
+    display: none;
+}
+
+.final_pw_ck{
+    display: none;
+}
+
+.final_pwck_ck{
+    display: none;
+}
+
+.final_name_ck{
+    display: none;
+}
+
+.final_mail_ck{
+    display: none;
+}
+
+.final_addr_ck{
+    display: none;
+}
+
+.pwck_input_re_1{
+    color : green;
+    display: none;
+}
+
+.pwck_input_re_2{
+    color: red;
+    display: none;
+}
+
+h2 {
+    margin: 19px 0 8px;
+    font-weight: 700;
+}
+
+h3 {
+    margin: 19px 0 8px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+.box input, .box input:focus {
+    display: block;
+    width: 100%;
+    height: 51px;
+    margin: 1rem;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    box-shadow: 0 0 0 1pt grey;
+    background: #fff;
+    position: relative;
+    outline: none;
+    transition: .1s;
+}
+.box input:focus {
+    box-shadow: 0 0 3pt 2pt cornflowerblue;
+}
+
+.int {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: #fff;
+    font-size: 20px;
+    padding: 10px;
+}
+
+
+
+.join_button {
+        width:100%;
+        border-radius:30px;
+        margin: 19px 0px;
+        background:#0d6efd;
+        color:#fff;
+        border:none;
+        position:relative;
+        height:60px;
+        font-size:1.6em;
+        padding:0 2em;
+        cursor:pointer;
+        transition:800ms ease all;
+        outline:none;
+}
+.join_button:hover{
+  background:#fff;
+  color:#0d6efd;
+}
+
+.mail_check_box{
+border-radius: 25px;
+    background:#212529;
+        color:#fff;
+        border:none;
+        position:relative;
+
+        font-size:16px;
+        padding:0 10px;
+        cursor:pointer;
+        transition:300ms ease all;
+        outline:none;
+}
+.mail_check_box:hover{
+    background:#fff;
+  color:#212529;
+}
+
+.id_input_re_1 {
+    margin-top: 9px;
+    font-size: 12px;
+    color: green;
+    display: none;
+}
+.good {
+    margin-top: 9px;
+    font-size: 12px;
+    color: green;
+    display: none;
+}
+
+.err {
+    margin-top: 9px;
+    font-size: 12px;
+    color: red;
+    display: none;
+}

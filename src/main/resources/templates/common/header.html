@@ -1,0 +1,41 @@
+<nav class="navbar">
+    <div class="navbar_logo">
+        <a href="/" style="display: flex;text-align: center;padding-right: 10px;align-items: center;">
+            <img src="/img/travel.png" width="20px"></a>
+        <a href="/">Travel</a>
+    </div>
+
+
+
+
+
+
+    <div class="dropdown_nav">
+
+        <div class="material-icons" style="border-radius: 10rem; padding: .4rem; color: black; background-color: white">
+            account_circle
+        </div>
+        <div class="dropdown-content" style="border-radius: 1rem; z-index: 1000;">
+
+            <th:block th:if="${session.member eq null}">
+            <a href="/user/login">로그인</a>
+            <a href="/user/signup"> 회원가입</a>
+
+            </th:block>
+
+            <th:block th:unless="${session.member eq null}">
+                <a class="move" href="/user/mypage">마이페이지</a>
+                <a href="/user/logout">로그아웃 </a>
+
+                <th:block th:if="${session.member.adminCk == 1}">
+                    <a href="/admin/main">관리자</a>
+                </th:block>
+            </th:block>
+
+            <a href="board/getBoardList">게시판</a>
+            <a href="/chat/room">실시간채팅</a>
+
+        </div>
+    </div>
+
+</nav>

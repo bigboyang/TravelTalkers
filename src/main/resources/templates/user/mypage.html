@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/head.html"></head>
+
+<link rel="stylesheet" type="text/css" href="/static/css/user/mypage.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/user/mypage.css" th:href="@{css/user/mypage.css}"/>
+
+<body>
+<header th:insert="common/header.html"></header>
+<div class="mypage_main col-8">
+
+    <div class="mypage_profile">
+        <h1> 당신의 프로필 </h1>
+        <th:block th:if="${session.member.memberFile eq null}">
+            <img th:src="@{/img/default_profile.png}" style="width: 120px; height: 120px; border-radius: 100%;">
+        </th:block>
+        <th:block th:unless="${session.member.memberFile eq null}">
+            <img th:src="@{/img/}+${session.member.memberFile}" style="width: 120px; height: 120px; border-radius: 100%;">
+        </th:block>
+    </div>
+
+    <div class="container my-3 ">
+        <div style="margin: 1rem auto;">
+            <p th:text="${session.member.memberName}" style="font-size: x-large"></p>
+        </div>
+        <div style="margin: 2rem auto;">
+            <a class="material-icons" style="box-shadow: 0 0 4px #ccc; border-radius: 10rem; padding: .4rem; color: black" href="user/mypage/modify"> edit </a>
+            <a class="material-icons" style="box-shadow: 0 0 4px #ef6060; border-radius: 10rem; padding: .4rem; color: black" href="user/mypage/delete"> delete </a>
+        </div>
+    </div>
+
+    <div>
+        <h2 style="margin: 10px 30px;">당신이 등록한 게시물</h2>
+        <hr>
+    </div>
+    <div class="mytable" th:if="${#lists.size(boardList)} > 0">
+        <table class="type10">
+            <thead>
+            <tr>
+
+                <th scope="cols">제목</th>
+
+                <th scope="cols">페이지</th>
+
+            </tr>
+            </thead>
+
+
+            <tbody th:each="board : ${boardList}">
+            <tr>
+
+                <td th:text="${board.title}"></td>
+
+
+                <td><a th:href="@{/board/getBoard(bno=${board.bno})}" ><span style="color:blue;">이동</span></a> </td>
+            </tr>
+            </tbody>
+
+
+        </table>
+    </div>
+
+</div>
+
+
+    <div>
+        <nav aria-label="Page navigation example " style="
+    display: flex;
+    justify-content: center;" th:if="${#lists.size(boardList)} > 0">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="/user/mypage?pageNum=1&amp;searchCondition=TITLE&amp;searchKeyword=" aria-label="Previous">
+                        <span aria-hidden="true">처음</span>
+                    </a>
+                </li>
+
+
+                <li class="page-item">
+                    <a class="page-link" href="/user/mypage?pageNum=1&amp;searchCondition=TITLE&amp;searchKeyword=">1</a>
+                </li>
+
+
+                <li class="page-item">
+                    <a class="page-link" href="/user/mypage?pageNum=1&amp;searchCondition=TITLE&amp;searchKeyword=" aria-label="Previous">
+                        <span aria-hidden="true">마지막</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+
+</body>
+</html>

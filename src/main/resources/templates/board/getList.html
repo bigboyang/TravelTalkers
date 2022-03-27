@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/head.html">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script th:src="@{/js/responsiveslides.js}"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/board/boardList.css" th:href="@{css/board/boardList.css}"/>
+<header th:insert="common/header.html"></header>
+
+<ul class="rslides">
+    <li><img src="img/banner-1.jpg" alt="" ></li>
+    <li><img src="img/banner-2.jpg" alt="" ></li>
+<!--    <li><img src="img/view2.jpg" alt="" style="height: 200px; object-fit: cover"></li>-->
+</ul>
+
+<div id="contents" class="travel_board">
+    <div class="inner area_tag">
+        <p class="tit">게시판</p>
+    </div>
+
+    <div class="board_search">
+        <form th:action="@{/board/getBoardList}">
+            <select class="form-control-search">
+                <option name="searchCondition" value="TITLE">제목</option>
+                <option name="searchCondition" value="CONTENT">내용</option>
+            </select>
+            <label class="inp_search">
+                <input type="text" placeholder="Search" class="srch_text" name="searchKeyword" value="">
+                <a th:href="@{/board/getBoardList}" class="search_btn">검색하기</a>
+            </label>
+            <a th:href="@{/board/goInsert}" class="write_btn">글쓰기</a>
+        </form>
+    </div>
+
+    <div class="trip_list_wrap" th:if="${#lists.size(boardList)} > 0">
+        <div class="board_item" th:each="board : ${boardList}">
+            <a th:href="@{/board/getBoard(bno=${board.bno})}">
+                <div class="area_top">
+                    <div class="form_writer">
+                        <p th:text="${board.memberId}"></p>
+                    </div>
+                </div>
+                <div class="area_content">
+                    <p class="title" th:text="${board.title}"></p>
+                    <p class="desc" th:text="${board.content}"></p>
+                </div>
+
+            <div class="area_bottom">
+                <div class="area_flex">
+                    <p class="hash" th:text="${#dates.format(board.regDate, 'yyyy-MM-dd HH:mm')}"></p>
+                    <p class="text_vague"  th:text="'조회수 ' + ${board.cnt} + ' · 추천 ' + ${board.likes}"></p>
+                </div>
+            </div>
+            </a>
+        </div>
+    </div>
+    <div th:unless="${#lists.size(boardList)} > 0" style="text-align: center; padding: 100px;">
+        <p>조회된 결과가 없습니다.</p>
+    </div>
+
+    <nav aria-label="Page navigation example" th:if="${#lists.size(boardList)} > 0">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" th:href="@{/board/getBoardList(pageNum=1,searchCondition=${pageMaker.searchCondition},searchKeyword=${pageMaker.searchKeyword})}" aria-label="Previous">
+                    <span aria-hidden="true">처음</span>
+                </a>
+            </li>
+
+            <th:block  th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+                <li class="page-item"
+                    th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+                    th:each="pageButton : ${#numbers.sequence(start, end)}">
+                    <a class="page-link" th:href="@{/board/getBoardList(pageNum=${pageButton},searchCondition=${pageMaker.searchCondition},searchKeyword=${pageMaker.searchKeyword})}"  th:text=${pageButton} ></a>
+                </li>
+            </th:block>
+
+            <li class="page-item">
+                <a class="page-link" th:href="@{/board/getBoardList(pageNum=${pageMaker.endPage},searchCondition=${pageMaker.searchCondition},searchKeyword=${pageMaker.searchKeyword})}" aria-label="Previous">
+                    <span aria-hidden="true">마지막</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+
+<script>
+    $(function() {
+        $(".rslides").responsiveSlides();
+    });
+</script>
+
+</body>
+</html>

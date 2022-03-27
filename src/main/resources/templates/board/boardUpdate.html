@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/head.html">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" type="text/css" href="/static/css/board/boardDetail.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/board/boardDetail.css" th:href="@{css/board/boardDetail.css}"/>
+<body>
+<header th:insert="common/header.html"></header>
+<div id="contents" class="main">
+    <form id="write_form" th:action="@{/board/updateBoard(bno=${board.bno})}" method="post" enctype="multipart/form-data">
+        <table class="form-table">
+            <tbody>
+            <tr>
+                <th>작성자</th>
+                <td th:text="${board.memberId}"></td>
+            </tr>
+            <tr id="tr_title">
+                <th>제목</th>
+                <td><input type="text" class="counter_check_title" name="title" th:value="${board.title}"></td>
+            </tr>
+            <tr>
+                <th>내용</th>
+                <td><textarea type="text" class="counter_check_content" name="content" th:text="${board.content}"></textarea></td>
+            </tr>
+            <tr>
+                <th>첨부파일 변경</th>
+                <td>
+                    <div th:if="${not #strings.isEmpty(board.pic)}">
+                        <img th:if="${#strings.contains(board.pic,'.')}" th:src="@{../imgs/} + ${board.pic}" width="100px" height="100px"/>
+                    </div>
+                    <input type="file" name="file">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="comment_section">
+            <input type="submit" class="btn btn-primary float_r" value="수정"/>
+        </div>
+    </form>
+</div>
+</body>
+</html>

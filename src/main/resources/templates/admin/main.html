@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/static/css/admin/main.css" th:href="@{/css/admin/main.css}">
+
+    <!-- IONICONS -->
+    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+
+    <style>
+
+        body{font-family:'Nanum Gothic';}
+
+        .margin2{
+            margin-bottom: 5rem;
+        }
+
+        .parent {
+            display: flex;
+            padding: 6px;
+        }
+        .parent .child {
+            padding: 1rem;
+            flex: 1;
+            margin: 15px 10px 0px 0px;
+            height: 10rem;
+            border-radius: 1rem;
+            border: 3px solid black;
+        }
+
+        .left{
+            background-color: beige;
+        }
+
+        .center{
+            background-color: beige;
+        }
+
+        .right{
+            background-color: beige;
+        }
+
+    </style>
+
+</head>
+<body id="body-pd">
+
+<div class="l-navbar" id="navbar">
+    <nav class="nav">
+        <div>
+            <div class="nav__brand">
+                <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+                <a href="/board/getBoardList" class="nav__logo">Mini_Project</a>
+            </div>
+            <div class="nav__list">
+                <a href="/admin/main" class="nav__link active">
+                    <ion-icon name="home-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">홈으로</span>
+                </a>
+                <a href="#" class="nav__link">
+                    <ion-icon name="chatbubbles-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">채팅</span>
+                </a>
+
+                <div href="#" class="nav__link collapse">
+                    <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">데이터 관리</span>
+
+                    <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+                    <ul class="collapse__menu">
+                        <a href="/admin/userList" class="collapse__sublink">User</a>
+                        <a href="/admin/boardList" class="collapse__sublink">Board</a>
+                    </ul>
+                </div>
+
+                <a href="/user/mypage" class="nav__link">
+                    <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">관리자 계정 관리</span>
+                </a>
+            </div>
+            <a href="/user/logout" class="nav__link">
+                <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+                <span class="nav_name">로그아웃</span>
+            </a>
+        </div>
+    </nav>
+</div>
+
+<h1 class="margin2">관리자 페이지</h1>
+
+<div class="parent">
+
+    <div class="child left">
+        <span>현재 가입한 유저의 수</span>
+        <h1 style="text-align: center; margin: 2rem;">[[${usercnt}]]</h1>
+    </div>
+    <div class="child center">
+        <span>현재 등록된 글의 수</span>
+        <h1 style="text-align: center; margin: 2rem;">[[${BoardCnt}]]</h1>
+    </div>
+    <div class="child right">
+        <span>현재 등록된 댓글의 수</span>
+        <h1 style="text-align: center; margin: 2rem;">[[${CommentCnt}]]</h1>
+    </div>
+
+</div>
+
+<hr style="margin-top: 6rem; margin-bottom: 1rem">
+<h2> 당신은 관리자입니다! </h2>
+<h3> 회원 또는 글의 정보를 수정하거나 조회 삭제가 가능합니다.</h3>
+<h3> 왼쪽의 메뉴를 열어 여러가지 기능을 확인해 보세요 </h3>
+
+
+
+
+<script>
+
+    /* EXPANDER MENU */
+    const showMenu = (toggleId, navbarId, bodyId) => {
+        const toggle = document.getElementById(toggleId),
+            navbar = document.getElementById(navbarId),
+            bodypadding = document.getElementById(bodyId)
+
+        if( toggle && navbar ) {
+            toggle.addEventListener('click', ()=>{
+                navbar.classList.toggle('expander');
+
+                bodypadding.classList.toggle('body-pd')
+            })
+        }
+    }
+
+    showMenu('nav-toggle', 'navbar', 'body-pd')
+
+    /* LINK ACTIVE */
+    const linkColor = document.querySelectorAll('.nav__link')
+    function colorLink() {
+        linkColor.forEach(l=> l.classList.remove('active'))
+        this.classList.add('active')
+    }
+    linkColor.forEach(l=> l.addEventListener('click', colorLink))
+
+    /* COLLAPSE MENU */
+    const linkCollapse = document.getElementsByClassName('collapse__link')
+    var i
+
+    for(i=0;i<linkCollapse.length;i++) {
+        linkCollapse[i].addEventListener('click', function(){
+            const collapseMenu = this.nextElementSibling
+            collapseMenu.classList.toggle('showCollapse')
+
+            const rotate = collapseMenu.previousElementSibling
+            rotate.classList.toggle('rotate')
+        });
+    }
+
+</script>
+
+</body>
+</html>

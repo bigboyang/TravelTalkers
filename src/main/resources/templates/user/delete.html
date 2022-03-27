@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<style>
+    input{ width: 500px; padding: 10px 20px; margin: 1rem 0 ; box-sizing: border-box; border-radius: 10rem}
+</style>
+
+<head th:insert="common/head.html"></head>
+<body>
+<header th:insert="common/header.html"></header>
+<div style="text-align: center; max-width: 500px; margin: 4rem auto;">
+
+    <h2> 회원 삭제 </h2> <br>
+
+    <h4> 회원 삭제시 게시물, 댓글이 전부 삭제됩니다.</h4>  <br>
+    <h4> 또한 게시물의 복원 또한 할 수 없습니다. </h4> <br>
+    <h4> 그래도 삭제하시겠습니까? </h4> <br>
+
+    <form id="delete_form" method="post">
+
+        <input type="submit" class="btn btn-danger rounded-pill col-6 mt-3" onclick="if(!confirm('정말로 삭제 하시겠습니까?')){return false;}">
+
+    </form>
+</div>
+
+<script>
+
+
+</script>
+
+</body>
+</html>

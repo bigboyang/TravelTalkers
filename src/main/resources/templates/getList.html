@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/head.html"></head>
+    <link rel="stylesheet" type="text/css" href="/static/css/boardList.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/boardList.css" th:href="@{css/boardList.css}"/>
+<body>
+<header th:insert="common/header.html"></header>
+<div id="contents" class="travel_board">
+    <div class="inner area_tag">
+        <p class="tit">게시판</p>
+    </div>
+
+    <div class="board_search">
+        <select class="form-control">
+            <option value="bc_title">제목</option>
+<!--            <option value="bc_content">내용</option>-->
+<!--            <option value="bc_writer_name">작성자명</option>-->
+        </select>
+
+        <label class="inp_search">
+            <input type="text" placeholder="Search" class="srch_text" name="searchKeyword" value="">
+            <a th:href="@{getBoardList}" class="search_btn">검색하기</a>
+        </label>
+        <a th:href="@{goInsert}" class="write_btn">글쓰기</a>
+
+    </div>
+
+    <div class="trip_list_wrap">
+        <div class="board_item" th:if="${#lists.size(boardList)} > 0" th:each="board : ${boardList}">
+            <a th:href="@{getBoard(bno=${board.bno})}">
+            <div class="area_top">
+                <div class="form_writer">
+                    <p th:text="${board.memberId}"></p>
+                </div>
+            </div>
+            <div class="area_content">
+                <p class="title" th:text="${board.title}"></p>
+                <div class="desc" th:text="${board.content}"></div>
+            </div>
+        </a>
+            <div class="area_bottom">
+                <div class="area_flex">
+                    <p class="hash" th:text="${#dates.format(board.regDate, 'yyyy-MM-dd HH:mm')}"></p>
+                    <p class="text_vague"  th:text="'조회수 ' + ${board.cnt}">조회수 · 댓글 1</p>
+                </div>
+            </div>
+        </div>
+        <div th:unless="${#lists.size(boardList)} > 0" th:text="조회된 결과가 없습니다."></div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--<input type="button" name="pageNum" value="${pageMaker.cri.pageNum}">-->
+<!--<input type="button" name="amount" value="${pageMaker.cri.amount}">-->
+
+<!--<ul>-->
+<!--    <li th:if="${result.prev}">.......(1)-->
+<!--        <a th:href="@{/member/list(page=${result.start-1})}">prev</a>-->
+<!--    </li>-->
+<!--    <li th:each="page: ${result.pageList}">-->
+<!--        <a th:href="@{/member/list(page=${page})}" th:class="${result.page==page?'bold':''}">[[${page}]]</a>......(2)-->
+<!--    </li>-->
+<!--    <li th:if="${result.next}">-->
+<!--        <a th:href="@{/member/list(page=${result.end+1})}">next</a>-->
+<!--    </li>-->
+<!--</ul>-->
+
+</body>
+</html>

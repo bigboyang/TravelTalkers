@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.miniproject.mapper.BoardMapper">
+
+    <insert id="insertBoard">
+        insert into BOARD(BNO, TITLE, memberId, CONTENT, PIC) VALUES (board_seq.nextval,#{title},#{memberId},#{content},#{pic})
+    </insert>
+
+	<insert id="insertComment">
+		insert into COMMENTS(cno, memberId, context, bno) VALUES
+			(
+					(select NVL(MAX(cno),0)+1 from COMMENTS)
+			,#{memberId},#{context},#{bno}
+			)
+	</insert>
+
+    <update id="updateBoard">
+        update board set title=#{title},content=#{content},pic=#{pic},updateDate=SYSDATE where bno=#{bno}
+	</update>
+
+	<update id="read">
+		update board set cnt = cnt+1 where bno=${bno}
+	</update>
+
+    <delete id="deleteBoard">
+	<![CDATA[
+        delete from board where bno=#{bno}
+        ]]>
+	</delete>
+
+    <select id="getBoard" resultType="com.example.miniproject.Domain.BoardVO">
+	<![CDATA[
+        select * from board where bno=#{bno}
+        ]]>
+	</select>
+
+<!--    <select id="getBoardList" resultType="com.example.miniproject.Domain.BoardVO">-->
+<!--		select a.*, ROWNUM as rnum from-->
+<!--		( select * from board-->
+<!--		where 1=1-->
+<!--		<if test="searchCondition == 'TITLE'">-->
+<!--			AND title like '%' ||#{searchKeyword}|| '%'-->
+<!--		</if>-->
+<!--		<if test="searchCondition == 'CONTENT'">-->
+<!--			AND CONTENT like '%' ||#{searchKeyword}|| '%'-->
+<!--		</if>) a-->
+<!--		ORDER BY BNO DESC-->
+<!--	</select>-->
+
+	<select id="selectBoardListCnt" resultType="int">
+		select count(a.bno) selectedNum from
+		( select * from board
+		where 1=1
+		<if test="searchCondition == 'TITLE'">
+			AND title like '%' ||#{searchKeyword}|| '%'
+		</if>
+		<if test="searchCondition == 'CONTENT'">
+			AND CONTENT like '%' ||#{searchKeyword}|| '%'
+		</if>) a
+		ORDER BY BNO DESC
+	</select>
+
+	<select id="getPage" resultType="com.example.miniproject.Domain.BoardVO">
+		select bno,memberId,content,title,regDate,updateDate,cnt,likes,pic,rNum from (select bno,memberId,content,title,regDate,updateDate,cnt,likes,pic,ROW_NUMBER() over (order by bno desc ) -1 as rNum from board)
+		where BNO>0
+		<if test="searchCondition == 'TITLE'">
+			AND title like '%' ||#{searchKeyword}|| '%'
+		</if>
+		<if test="searchCondition == 'CONTENT'">
+			AND CONTENT like '%' ||#{searchKeyword}|| '%'
+		</if>
+		<if test="searchCondition == 'USERID'">
+			AND memberId like '%' ||#{searchKeyword}|| '%'
+		</if>
+		AND  rNum between (#{pageNum} -1) * #{amount} and ((#{pageNum}*#{amount}) -1)
+		ORDER BY BNO DESC
+	</select>
+
+	<select id="getCommentList" resultType="com.example.miniproject.Domain.CommentVO">
+		select cno, memberId, context, bno  from COMMENTS where bno=#{bno} order by cno desc
+	</select>
+
+	<delete id="deleteComment">
+		delete from comments where cno=#{cno}
+	</delete>
+
+</mapper>

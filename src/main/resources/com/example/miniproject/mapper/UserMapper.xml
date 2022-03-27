@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.miniproject.mapper.UserMapper">
+
+    <insert id="memberJoin">
+
+        insert into mini_member values(#{memberId}, #{memberPw}, #{memberName}, #{memberMail}, #{memberAddr1}, #{memberAddr2}, #{memberAddr3}, null, 0 , sysdate)
+
+    </insert>
+
+    <select id="idCheck" resultType="int">
+
+        select count(*) from mini_member where memberId = #{memberId}
+
+    </select>
+
+    <select id="UserLogin" resultType="com.example.miniproject.Domain.UserVO">
+
+        select memberid, membername, memberPw, adminCk, memberMail, memberFile from mini_member where memberid = #{memberId}
+
+    </select>
+
+    <update id="UserUpdate">
+
+        update mini_member set memberName = #{memberName}, memberMail = #{memberMail}, memberFile = #{memberFile} where memberId = #{memberId}
+
+    </update>
+
+    <delete id="UserDelete">
+
+        delete mini_member where memberId = #{memberId}
+    </delete>
+
+    <select id="GetList" resultType="com.example.miniproject.Domain.UserVO">
+
+<![CDATA[
+        select memberId, memberName, memberMail, memberAddr1, memberAddr2
+        from (
+                 select rownum as rn, memberId, memberName, memberMail, memberAddr1, memberAddr2
+                 from mini_member
+                 where rownum <= #{pageNum} * #{amount}
+    ]]>
+            <if test="keyword != null">
+                and memberId like '%'||#{keyword}||'%'
+            </if>
+        <![CDATA[
+             )
+        where rn > (#{pageNum} - 1) * #{amount}
+    ]]>
+
+</select>
+
+    <select id="GetUser" resultType="com.example.miniproject.Domain.UserVO">
+
+        select * from mini_member where memberId = #{memberId}
+
+    </select>
+
+    <delete id="adminUserdelete">
+
+        delete from mini_member where memberId = #{memberId}
+
+    </delete>
+
+    <select id="CountUser" resultType="int">
+
+        select count(*) from mini_member
+
+        <if test="keyword != null">
+
+            where memberId like '%'||#{keyword}||'%'
+
+        </if>
+
+    </select>
+
+    <select id="CountUserId" resultType="int">
+
+        select count(*) from board where memberId = #{memberId}
+
+    </select>
+
+    <select id="CountBoard" resultType="int">
+
+        select count(*) from board
+
+    </select>
+
+    <select id="CountComment" resultType="int">
+
+        select count(*) from comments
+
+    </select>
+
+    <select id="getMyBoard" resultType="com.example.miniproject.Domain.BoardVO">
+    select bno,memberId,content,title,regDate,updateDate,cnt,likes,pic,rNum from (select bno,memberId,content,title,regDate,updateDate,cnt,likes,pic,ROW_NUMBER() over (order by bno desc ) -1 as rNum from board) where memberId = #{memberId}
+    <if test="searchCondition == 'TITLE'">AND title like '%' ||#{searchKeyword}|| '%' </if>
+
+    <if test="searchCondition == 'CONTENT'">AND CONTENT like '%' ||#{searchKeyword}|| '%' </if>
+    AND rNum between (#{pageNum} -1) * #{amount} and ((#{pageNum}*#{amount})-1) ORDER BY BNO DESC
+</select>
+
+    <select id="selectBoardListCnt" resultType="int">
+    select count(bno) selectedNum from (select * from board where memberId=#{memberId}
+    <if test="searchCondition == 'TITLE'"> AND title like '%' ||#{searchKeyword}|| '%' </if>
+
+    <if test="searchCondition == 'CONTENT'"> AND CONTENT like '%' ||#{searchKeyword}|| '%' </if>
+     ) ORDER BY BNO DESC
+
+</select>
+</mapper>

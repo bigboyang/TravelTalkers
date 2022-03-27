@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/static/css/admin/main.css" th:href="@{/css/admin/main.css}">
+
+    <!-- IONICONS -->
+    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+
+    <style>
+
+        body{font-family:'Nanum Gothic';}
+
+        .margin2{
+            margin-bottom: 5rem;
+        }
+
+        table.type10 {
+            border-collapse: collapse;
+            text-align: left;
+            line-height: 1.5;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            margin: 20px 10px;
+        }
+        table.type10 thead th {
+            width: 150px;
+            padding: 10px;
+            font-weight: bold;
+            vertical-align: top;
+            color: #090909;
+            background: bisque;
+            margin: 20px 10px;
+        }
+        table.type10 tbody th {
+            width: 150px;
+            padding: 10px;
+        }
+        table.type10 td {
+            width: 350px;
+            padding: 10px;
+            vertical-align: top;
+        }
+        table.type10 .even {
+            background: #fdf3f5;
+        }
+
+.btn span{
+    border-radius: 25px;
+        background:#212529;
+            color:#fff;
+            border:none;
+            position:relative;
+
+            font-size:16px;
+            padding:0 10px;
+            cursor:pointer;
+            transition:300ms ease all;
+            outline:none;
+    }
+.btn span:hover{
+    background:#fff;
+    color:#212529;
+}
+
+
+    </style>
+
+</head>
+<body id="body-pd">
+
+<div class="l-navbar" id="navbar">
+    <nav class="nav">
+        <div>
+            <div class="nav__brand">
+                <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+                <a href="/board/getBoardList" class="nav__logo">Mini_Project</a>
+            </div>
+            <div class="nav__list">
+                <a href="/admin/main" class="nav__link active">
+                    <ion-icon name="home-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">홈으로</span>
+                </a>
+                <a href="#" class="nav__link">
+                    <ion-icon name="chatbubbles-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">채팅</span>
+                </a>
+
+                <div href="#" class="nav__link collapse">
+                    <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">데이터 관리</span>
+
+                    <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+                    <ul class="collapse__menu">
+                        <a href="/admin/userList" class="collapse__sublink">User</a>
+                        <a href="/admin/boardList" class="collapse__sublink">Board</a>
+                    </ul>
+                </div>
+
+                <a href="/user/mypage" class="nav__link">
+                    <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">관리자 계정 관리</span>
+                </a>
+            </div>
+            <a href="/user/logout" class="nav__link">
+                <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+                <span class="nav_name">로그아웃</span>
+            </a>
+        </div>
+    </nav>
+</div>
+
+<h1 class="margin2">유저 상세 정보</h1>
+
+<table class="type10">
+    <thead>
+    <tr>
+        <th scope="cols">아이디</th>
+        <th scope="cols">[[${userget.memberId}]]</th>
+    </tr>
+    </thead>
+    <tr>
+        <td>닉네임</td>
+        <td>[[${userget.memberName}]]</td>
+    </tr>
+    <tr class="even">
+        <td>메일</td>
+        <td>[[${userget.memberMail}]]</td>
+    </tr>
+    <tr>
+        <td>우편번호</td>
+        <td>[[${userget.memberAddr1}]]</td>
+    </tr>
+    <tr class="even">
+        <td>주소</td>
+        <td>[[${userget.memberAddr2}]]</td>
+    </tr>
+    <tr>
+        <td>상세 주소</td>
+        <td>[[${userget.memberAddr3}]]</td>
+    </tr>
+    <tr class="even">
+        <td>
+            <a th:href="@{/admin/boardList(searchCondition=USERID,searchKeyword=${userget.memberId})}">
+                해당 유저가 작성한 글
+            </a>
+        </td>
+        <td>[[${countboard}]] </td>
+    </tr>
+    <tr>
+        <td>해당 유저가 작성한 댓글</td>
+        <td> 0 </td>
+    </tr>
+</table>
+<div class="btns">
+    <a href="/admin/userList" class="btn btn-dark rounded-pill col-3 mt-3" style="float: left; margin-right: 2rem"><span>유저 목록으로</span></a>
+
+    <form id="form" action="/admin/delete" method="post" class="center">
+        <input type="hidden" id="memberId" name="memberId" th:value="${userget.memberId}">
+        <div class="btn btn-danger rounded-pill col-3 mt-3" type="submit" onclick="if(!confirm('정말로 삭제 하시겠습니까?')){return false;}">
+            <span>해당유저 삭제</span>
+        </div>
+    </form>
+</div>
+<script>
+
+    /* EXPANDER MENU */
+    const showMenu = (toggleId, navbarId, bodyId) => {
+        const toggle = document.getElementById(toggleId),
+            navbar = document.getElementById(navbarId),
+            bodypadding = document.getElementById(bodyId)
+
+        if( toggle && navbar ) {
+            toggle.addEventListener('click', ()=>{
+                navbar.classList.toggle('expander');
+
+                bodypadding.classList.toggle('body-pd')
+            })
+        }
+    }
+
+    showMenu('nav-toggle', 'navbar', 'body-pd')
+
+    /* LINK ACTIVE */
+    const linkColor = document.querySelectorAll('.nav__link')
+    function colorLink() {
+        linkColor.forEach(l=> l.classList.remove('active'))
+        this.classList.add('active')
+    }
+    linkColor.forEach(l=> l.addEventListener('click', colorLink))
+
+    /* COLLAPSE MENU */
+    const linkCollapse = document.getElementsByClassName('collapse__link')
+    var i
+
+    for(i=0;i<linkCollapse.length;i++) {
+        linkCollapse[i].addEventListener('click', function(){
+            const collapseMenu = this.nextElementSibling
+            collapseMenu.classList.toggle('showCollapse')
+
+            const rotate = collapseMenu.previousElementSibling
+            rotate.classList.toggle('rotate')
+        });
+    }
+
+</script>
+
+</body>
+</html>

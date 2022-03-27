@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/head.html">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<link rel="stylesheet" type="text/css" href="/static/css/board/boardDetail.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/board/boardDetail.css" th:href="@{css/board/boardDetail.css}"/>
+
+<body>
+<header th:insert="common/header.html"></header>
+<div id="contents" class="main">
+    <div class="area_top">
+        <p class="title" th:text="${board.title}"></p>
+    </div>
+
+    <div class="board_summary">
+        <div class="left">
+            <div class="write" th:text="${board.memberId}"></div>
+            <div class="tools" th:if="${session.id} != null and ${session.id} == ${board.memberId}">
+                <span th:with="sessionId=${session.id}"></span>
+                <a href="#" onclick=""  th:href="@{/board/goUpdate(bno=${board.bno})}" class="permission_require_pass">수정</a>
+                <a href="#" onclick="" th:href="@{/board/deleteBoard(bno=${board.bno})}" class="permission_require_pass">삭제</a>
+            </div>
+        </div>
+        <div class="view_and_mes">
+            <p th:text="${#dates.format(board.regDate, 'yyyy.MM.dd HH:mm')} + ' 조회수 ' + ${board.cnt}"></p>
+        </div>
+    </div>
+
+    <div class="area_middle">
+        <p style="width: 100%; border: none; outline: none; overflow-wrap: break-word;" class="desc" th:text="${board.content}"></p>
+        <div th:if="${not #strings.isEmpty(board.pic)}">
+            <img th:if="${#strings.contains(board.pic,'.')}" th:src="@{/imgs/}+${board.pic}" width="500px" height="auto" style="object-fit: cover"/>
+        </div>
+    </div>
+
+
+    <div class="area_comment">
+        <p><b th:text="${#lists.size(commentList)}" style="color: rgb(0, 206, 124);"></b>개의 댓글</p>
+        <span class="up_down">
+             <a type="button" id="like" class="up"></a>
+        </span>
+    </div>
+
+
+    <!-- 댓글 작성 -->
+    <div class="comment_textarea">
+        <form method="post" th:action="@{/board/insertComment}" id="commentForm">
+            <!--히든영역-->
+            <input type="hidden" name="bno" id="bno" th:value="${board.bno}"/>
+            <div class="textarea_block">
+                <textarea placeholder="댓글을 남겨주세요" id="content" name="context" style="overflow: hidden visible; overflow-wrap: break-word; height: 61px;"></textarea>
+                <!-- submit-->
+                <input type="submit" id="comment_btn" class="btn btn-secondary float_r" value="작성">
+            </div>
+        </form>
+    </div>
+
+    <div class="product_list" th:if="${#lists.size(commentList)} > 0" th:each="comment : ${commentList}">
+        <div class="form_writer_01">
+            <img th:src="@{/img/default_profile.png}" style="width: 42px; height: 42px;">
+            <div style="margin-left: 11px;">
+                <p style="font-size: 15px;" th:text="${comment.memberId}"></p>
+            </div>
+        </div>
+        <div class="area_content">
+            <div class="desc">
+                <p th:text="${comment.context}"></p>
+            </div>
+            <div class="tools" th:if="${session.id} != null and ${session.id} == ${comment.memberId}">
+                <p class="comment_erase" style="cursor:pointer; text-align:right;" th:value="${comment.cno}">삭제</p>
+                <input type="hidden" name="bno" id="cbno" th:value="${comment.bno}"/>
+                <input type="hidden" name="cno" id="ccno" th:value="${comment.cno}"/>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="comment_section">
+        <a class="btn btn-secondary float_l" th:href="@{/board/getBoardList}">목록</a>
+        <a class="btn btn-secondary float_r" th:href="@{/board/goInsert}">글쓰기</a>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $('.comment_erase').click(function(){
+        var bno = document.getElementById("cbno");
+        var cno = document.getElementById("ccno");
+        confirm("정말 삭제하시겠습니까?")
+        location.href="/board/deleteComment?bno="+bno.value+"&cno="+cno.value;
+    });
+
+    $(window).on('load', function(){
+        $('#like').click(function(){
+            if($("#like").hasClass('up on')){
+                $("#like").removeClass("up on");
+                $("#like").addClass("up");
+            }else{
+                $("#like").removeClass("up");
+                $("#like").addClass("up on");
+            };
+            });
+        $('#comment_btn').click(function(){
+            var content = document.getElementById("content");
+            if(content.value==""){
+                alert("댓글을 입력해주세요");
+                return false;
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>

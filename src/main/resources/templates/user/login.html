@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/head.html">
+</head>
+
+<body>
+
+    <div class="d-lg-flex half" >
+        <div class="bg order-1 order-md-2" style="background-image: url('/img/6.jpg'); height: 130%;"></div>
+        <div class="contents order-2 order-md-1" style="background: ivory; height: 130%;" >
+
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-7">
+                        <form id="Login_form" method="post">
+                        <div class="mb-4" font-style="bold">
+                            <h3>Welcome Aboard</h3>
+                            <p class="mb-4">지금 로그인하셔서 사람들과 함께 즐거운 여행을 떠나세요!</p>
+                        </div>
+                        <div class="login-btn" style="align: center;">
+                            <div><img th:src="@{/img/travel.png}" width="50%"></div>
+                            </br>
+                            <div class="id_wrap">
+                                <div class="id_input_box" style="align-items: center;">
+                                    <img th:src="@{/img/identity_2.png}" >
+                                    <input type="text" class="id_input" name="memberId" placeholder="ID를 입력하세요" >
+                                </div>
+                            </div>
+                            </br>
+                            <div class="pw_wrap">
+                                <div class="pw_input_box" style="align-items: center;">
+                                    <img th:src="@{/img/lock_2.png}" >
+                                    <input type="password" class="pw_input" name="memberPw" placeholder="PW를 입력하세요" >
+                                </div>
+                            </div>
+                            </br>
+                                <div th:if = "${result} == 0" style="align-items: center;">
+                                    <script>alert("ID 혹은 PW가 잘못 입력되었습니다"+"\n"+"다시 한 번 확인 후 입력해주시기 바랍니다");</script>
+                                </div>
+                            </br>
+                            <div class="loginBtn" style="margin-left: 20px;">
+                                <input type="button" class="login_button" id="LoginBtn" value="로그인">
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+    var input = document.getElementById("Login_form");
+    input.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+        $("#Login_form").attr("action","/user/login.do")
+        $("#Login_form").submit();
+        }
+    });
+
+    $(".login_button").click(function (){
+    $("#Login_form").attr("action","/user/login.do")
+    $("#Login_form").submit();
+    })
+
+    form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/head.html"></head>
+<style>
+p {
+color: #b3b3b3;
+font-weight: 300; }
+
+h3 {
+    margin: 19px 0 8px;
+    font-size: 14px;
+    font-weight: 700;
+}
+.join_button {
+    font-weight: bold;
+}
+</style>
+
+<body>
+
+<div class="d-lg-flex half">
+
+
+    <div class="bg order-1 order-md-2" style="background-image: url('/img/6.jpg'); height:130%"></div>
+    <div class="contents order-2 order-md-1" style="background: ivory; height:130%">
+
+
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-7">
+                    <div>
+                        <form id="signup_form" method="post">
+                          <span class="info_title">
+                            <h2>회원가입</h2>
+                        </span>
+                            <!--   아이디 입력란 디자인   -->
+                            <div>
+                                <div class="id_name">
+                                    <h3>아이디</h3>
+                                </div>
+                                <div class="box id_input_join">
+                                    <!-- name == VO 변수값 !!! -->
+                                    <input class="int id_input" name="memberId">
+                                </div>
+                                <!-- ID중복 체크란 re_1, re_2 스타일 필요 -->
+                                <span class="good id_input_re_1">사용 가능한 아이디</span>
+                                <span class="err id_input_re_2">이미 사용중인 아이디</span>
+                                <span class="err final_id_ck">아이디를 입력하세요</span>
+                                <span class="id_input_box_warn"></span>
+                            </div>
+                            <!-- 비밀번호 입력란 디자인 -->
+                            <div>
+                                <h3>비밀번호</h3>
+                                <div class="box pw_input_join">
+                                    <!-- name == VO 변수값 !!! -->
+                                    <input class="int pw_input" name="memberPw">
+                                </div>
+                                <span class="err final_pw_ck">비밀번호를 입력하세요</span>
+                                <span class="pw_input_box_warn"></span>
+                            </div>
+                            <!-- 비밀번호 확인란 -->
+                            <div>
+                                <h3>비밀번호 확인</h3>
+                                <div class="box pwck_input_box">
+                                    <input class="int pwck_input">
+                                </div>
+                                <span class="err final_pwck_ck">비밀번호를 다시 한번 입력하세요</span>
+                                <span class="good pwck_input_re_1">비밀번호가 일치합니다.</span>
+                                <span class="err pwck_input_re_2">비밀번호가 일치하지 않습니다.</span>
+                            </div>
+                            <!-- 유저 네임 입력란 -->
+                            <div>
+                                <h3>이름</h3>
+                                <div class="box user_input_box">
+                                    <!-- name == VO 변수값 !!! -->
+                                    <input class="int user_input" name="memberName">
+                                </div>
+                                <span class="err final_name_ck">닉네임을 입력하세요</span>
+                            </div>
+                            <!-- 유저 이메일 입력란 -->
+                            <div class="mail-wrap">
+                                <h3>이메일</h3>
+                                <div class="box mail_input_box">
+                                    <!-- name == VO 변수값 !!! -->
+                                    <input class="int mail_input" name="memberMail">
+                                </div>
+                                <span class="err final_mail_ck">이메일을 입력하세요</span>
+                                <span class="mail_input_box_warn"></span>
+                                <!-- 인증번호 전송 및 코드 입력란 -->
+                                <div class="mail_check_wrap">
+                                    <!-- 메일 인증 쿼리 id ="mail_check_input_box_false" -->
+                                    <div class="box mail_check_input_box" id="mail_check_input_box_false">
+                                        <input class="int mail_check_input" disabled = "disabled">
+                                    </div>
+                                    <div class="mail_check_button">
+                                        <span class="mail_check_box">인증번호 전송</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <span id="mail_check_input_box_warn"></span>
+                                </div>
+                            </div>
+                            <!-- 주소 입력란 끝까지-->
+                            <div class="address_wrap">
+                                <h3>주소</h3>
+                                <div class="address_input_1_wrap">
+                                    <div class="box address_input_1_box">
+                                        <!-- 첫번째 주소 입력란 주소 찾기를 통한 입력 예정 -->
+                                        <input class="int address_input_1" name="memberAddr1" readonly="readonly">
+                                    </div>
+                                    <div class="address_button" onclick="execution_daum_address()">
+                                        <span class="mail_check_box">주소 찾기</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <!-- 상세 주소 입력 2,3 -->
+                                <div class="address_input_2_wrap">
+                                    <div class="box address_input_2_box">
+                                        <input class="int address_input_2" name="memberAddr2" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="address_input_3_wrap">
+                                    <div class="box address_input_3_box">
+                                        <input class="int address_input_3" name="memberAddr3" readonly="readonly">
+                                    </div>
+                                </div>
+                                <span class="final_addr_ck"></span>
+                            </div>
+                            <!-- join_button JQuery에서 사용 변경하지 말것 -->
+                            <div class="join_button_wrap">
+                                <input type="button" class="join_button" value="가입">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script th:src="@{/js/signup.js}"></script>
+</body>
+</html>

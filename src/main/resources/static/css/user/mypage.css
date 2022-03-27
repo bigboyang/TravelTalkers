@@ -1,0 +1,67 @@
+
+.mypage_main {
+    text-align: center;
+    max-width: 100%;
+    margin: 3% auto;
+    border: hidden;
+    border-radius: 15px;
+    box-shadow:4px 4px 6px 0px rgba(0,0,0,0.6);
+    background: white;
+}
+.mypage_profile h1 {
+    font-weight: bold;
+    margin: 4rem auto;
+    padding: 1rem;
+}
+.personal_boardList {
+    margin: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+.personal_boardList table{
+    margin: 1rem;
+}
+.personal_boardList table tr td.boardDetail{
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+.personal_boardList a {
+    color: blue;
+}
+
+.mytable{
+     text-align: center;
+}
+.type10 {
+      display: inline-table;
+      text-align: left;
+      line-height: 1.5;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      margin: 20px 10px;
+      width: 70%;
+}
+table.type10 thead th {
+          text-align: center;
+      width: 150px;
+      padding: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      vertical-align: top;
+      color: #090909;
+      background: bisque;
+}
+table.type10 tbody th {
+      width: 150px;
+      padding: 10px;
+}
+table.type10 td {
+        text-align: center;
+      width: 350px;
+      padding: 10px;
+      vertical-align: top;
+}
+table.type10 .even {
+      background: #fdf3f5;
+}

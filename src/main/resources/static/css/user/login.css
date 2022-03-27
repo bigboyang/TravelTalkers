@@ -1,0 +1,95 @@
+.login_warn{
+    align: center;
+    margin: auto;
+    text-color: red;
+    background: #fffeb3;
+    font-weight: 400;
+    border-style: dotted;
+    resize: horizontal;
+    width: 520px;
+    font-size: 20px;
+}
+#confirm {
+    display: none;
+    background-color: #F3F5F6;
+    color: #000000;
+    border: 1px solid #aaa;
+    position: fixed;
+    width: 300px;
+    height: 100px;
+    left: 50%;
+    margin-left: -100px;
+    padding: 10px 20px 10px;
+    box-sizing: border-box;
+    text-align: center;
+}
+#confirm button {
+    background-color: #FFFFFF;
+    display: inline-block;
+    border-radius: 12px;
+    border: 4px solid #aaa;
+    padding: 5px;
+    text-align: center;
+    width: 60px;
+    cursor: pointer;
+}
+    #confirm .message{
+        text-align: left;
+    }
+
+.id_input_box input, .pw_input_box input, .id_input_box input:focus, .pw_input_box input:focus {
+    border: none;
+    resize: horizontal;
+    width: 440px;
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 2pt;
+    box-shadow: 0 0 0 1pt grey;
+    outline: none;
+    transition: .1s;
+}
+.id_input_box input:focus, .pw_input_box input:focus {
+    box-shadow: 0 0 3pt 2pt cornflowerblue;
+}
+
+@media (min-width: 400px) {
+  .id_input_box input, .pw_input_box input, .id_input_box input:focus, .pw_input_box input:focus {
+    resize: horizontal;
+    max-width: 60%;
+  }
+  .login_warn{
+      max-width: 60%;
+  }
+}
+
+.login-btn div {
+    font-size: 28px;
+    text-align: center;
+}
+.login-btn div.login_warn {
+    font-size: 22px;
+    text-align: center;
+}
+
+.login-btn div.loginBtn input {
+    border: none;
+    width: 250px;
+    height: 60px;
+    background: #0080FF;
+    color: white;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 2pt;
+    outline: none;
+    transition: .1s;
+}
+.login-btn div.loginBtn input:hover {
+    background: #046CD5;
+    box-shadow: 0 0 3pt 2pt cornflowerblue;
+    transform: scale(1.1);
+}
+
+.login-btn div.loginBtn input:active {
+    transform: scale(1);
+}

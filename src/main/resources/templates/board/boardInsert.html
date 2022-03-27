@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/head.html">
+    <meta charset="UTF-8">
+    <title>boardInsert</title>
+</head>
+<link rel="stylesheet" type="text/css" href="/static/css/board/boardDetail.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/board/boardDetail.css" th:href="@{css/board/boardDetail.css}"/>
+<body>
+<header th:insert="common/header.html"></header>
+<div id="contents" class="main">
+    <form id="write_form" th:action="@{/board/insertBoard}" method="post" enctype="multipart/form-data">
+        <table class="form-table">
+            <tbody>
+            <tr>
+                <th>작성자</th>
+                <td th:text="${session.id}"></td>
+            </tr>
+            <tr id="tr_title">
+                <th>제목</th>
+                <td><input type="text" class="counter_check_title" name="title"></td>
+            </tr>
+            <tr>
+                <th>내용</th>
+                <td><textarea type="text" class="counter_check_content" name="content"></textarea></td>
+            </tr>
+            <tr>
+                <th>첨부파일</th>
+                <td>
+                    <input type="file" name="file">
+                    <!-- <li>다수의 파일들<input type="file" multiple="multiple" name="multiFiles"></li> -->
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="comment_section">
+            <input type="submit" class="btn btn-primary float_r" value="등록"/>
+        </div>
+    </form>
+</div>
+</body>
+</html>

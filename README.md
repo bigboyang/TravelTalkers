@@ -28,7 +28,7 @@
 
 ## :red_circle: PRIVIEW
 
-
+<img src="https://user-images.githubusercontent.com/87364146/165499828-8f2e6647-ade2-4718-8faf-9d6f1a34ff15.png">
 
 
 ## :large_blue_circle: 설명
